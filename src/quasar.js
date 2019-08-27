@@ -13,7 +13,7 @@ import {
   Ripple,
   Quasar,
   QAvatar,
-  QBar,
+  QBanner,
   QBtn,
   QBtnDropdown,
   QBtnGroup,
@@ -39,7 +39,7 @@ Vue.use(Quasar, {
   config: {},
   components: {
     QAvatar,
-    QBar,
+    QBanner,
     QBtn,
     QBtnDropdown,
     QBtnGroup,    

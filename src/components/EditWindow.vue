@@ -1,12 +1,25 @@
 <template>
-    <div v-if="lyrics">
-        <Sentence v-for="(item, index) in lyrics.data" :key="index" ref="Sentence" :cdata="{lyrics: item.textLine, line:index}" 
+  <div v-if="lyrics">
+    <q-banner v-for="(item, index) in lyrics.data" :key="index" inline-actions class="text-lback banner">
+      <Sentence ref="Sentence" :cdata="{lyrics: item.textLine, line:index}" 
                 :sel="item.sel" @drop=onDrop @edit=onEdit @showChord="showChord">
-        </Sentence>        
-    </div>
+      </Sentence>
+      <template v-slot:action>
+        <div>
+          <q-btn flat label="L" />
+          <q-btn flat label="C" />
+          <q-btn flat icon="close" />
+        </div>
+      </template>
+    </q-banner>
+  </div>
+
 </template>  
 
 <style>
+  .banner {
+    border-bottom: solid 1px;
+  }
 </style>
 
 <script>

@@ -1,9 +1,14 @@
 <template lang="html">
 
   <section class="character">
-    <draggable :componentData="cdata" style="display:inline" :group="{ pull: false , put: false }">
+    <template v-if="sentenceType=='L'">
+      <draggable :componentData="cdata" style="display:inline" :group="{ pull: false , put: false }">
+        <span class="char">{{computedChar}}</span>
+      </draggable>
+    </template>
+    <template v-else>
       <span class="char">{{computedChar}}</span>
-    </draggable>
+    </template>
   </section>
 
 </template>
@@ -13,12 +18,13 @@
 
   export default  {
     name: 'character',
-    props: ['cdata'],
+    props: ['cdata','type'],
     mounted() {
-
+      this.sentenceType = this.type;
     },
     data() {
       return {
+        sentenceType: null,
       }
     },
     methods: {
@@ -39,7 +45,9 @@
         console.log("Character chord is changed: ", newValue + "," + oldValue);
         if (newValue !== oldValue) this.chordData = newValue;
       },
-
+      type: function(newValue) {
+        this.sentenceType = this.type;
+      }
     }
 }
 </script>

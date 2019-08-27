@@ -1,17 +1,7 @@
 <template>
   <div v-if="lyrics">
-    <q-banner v-for="(item, index) in lyrics.data" :key="index" inline-actions class="text-lback banner">
-      <Sentence ref="Sentence" :cdata="{lyrics: item.textLine, line:index}" 
-                :sel="item.sel" @drop=onDrop @edit=onEdit @showChord="showChord">
-      </Sentence>
-      <template v-slot:action>
-        <div>
-          <q-btn flat label="L" />
-          <q-btn flat label="C" />
-          <q-btn flat icon="close" />
-        </div>
-      </template>
-    </q-banner>
+    <SentenceExtended v-for="(item, index) in lyrics.data" :key="index" 
+      :lyrics="lyrics"  :cdata="{lyrics: item.textLine, line:index}" :type="getSentenceType(item.type)" :sel="item.sel" />
   </div>
 
 </template>  
@@ -20,21 +10,25 @@
   .banner {
     border-bottom: solid 1px;
   }
+  .my-custom-toggle {
+    border: 1px solid #027be3;
+  }
 </style>
 
 <script>
-import Sentence from './Sentence';
+import SentenceExtended from './SentenceExtended';
 
 export default {
     name: 'EditWindow',
     props: ['song'],
     components: {
-        Sentence,
+        SentenceExtended,
     },
     data () {
         return {
             lyrics: null,
             sheet: null,
+            sentenceType: 'L',
         }
     },
     mounted() {
@@ -48,6 +42,11 @@ export default {
         
     },
   methods: {
+    getSentenceType: function(type) {
+      if (type === 'Info') return 'I';
+      else if (type == 'Chord') return 'C';
+      else return 'L';
+    },
     parseSong: function(song) {
         console.log("song", song);
         var data = [];
@@ -71,7 +70,9 @@ export default {
             }
             for (var i = lastChordPos; i < line.lyrics.length; ++i) arr.push({char: line.lyrics[i], chord: null});
           }
-          if (arr.length > 0) data.push({textLine: arr, sel: null});
+          if (arr.length > 0) {
+            data.push({textLine: arr, sel: null, type: line.type});
+          }
         }
         var result = {data: data};
         result.line = function(line) {
@@ -197,7 +198,7 @@ export default {
     songTitle: function() {
         if (!this.sheet || !this.sheet.metaData || !this.sheet.metaData.title) return "";
         return this.sheet.metaData.title;
-    }
+    },
   }
 }
 </script>

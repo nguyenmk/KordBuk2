@@ -7,7 +7,7 @@
     @click=onSelect
      >
     <td v-for="(item, index) of cdata.lyrics">      
-      <Character ref="Character" style="display:inline" 
+      <Character style="display:inline" :type="type"
         :cdata="{index: index, line:cdata.line, name: draggedName,
                         char: item.char, chord: item.chord, call:triggerDrop}" 
       />
@@ -21,7 +21,7 @@
 
   export default  {
     name: 'lyrics-line',
-    props: ['cdata', 'sel', 'draggedName'],
+    props: ['cdata', 'sel', 'draggedName', 'type'],
     mounted() {
 
     },

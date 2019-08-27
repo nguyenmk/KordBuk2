@@ -1,11 +1,16 @@
 <template lang="html">
 
   <section class="chord" style="position:relative" >
+    <template v-if="sentenceType=='C' || sentenceType=='L'">
     <draggable :componentData="cdata" style="display:inline" 
         :group="{ pull: onPull , put: false }" 
         @end=onEnd>
       <span v-show="cdata.chord" @mouseover="showChordImage(true)" @mouseleave="showChordImage(false)">{{chordText}}</span>
     </draggable>
+    </template>
+    <template v-else>
+      <span v-show="cdata.chord" @mouseover="showChordImage(true)" @mouseleave="showChordImage(false)">{{chordText}}</span>
+    </template>
   </section>
 
 </template>
@@ -15,15 +20,16 @@
 
   export default  {
     name: 'chord',
-    props: ['cdata'],
+    props: ['cdata', 'type'],
     mounted() {
-
+      this.sentenceType = this.type;
     },
     data() {
       return {
         chordValue: this.value,
         chordIndex: this.index,
         to: null,
+        sentenceType: 'C',
       }
     },
     methods: {
@@ -54,6 +60,9 @@
       draggable,
     },
     watch: {
+      type: function(newValue) {
+        this.sentenceType = this.type;
+      }
     }
 }
 </script>

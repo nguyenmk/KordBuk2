@@ -14,16 +14,19 @@
 
     <q-footer elevated>
       <q-toolbar>
-        <q-toolbar-title>Footer</q-toolbar-title>
-        <ChordBar :instrument="instrument"/>
+        <draggable style="display:inline" :componentData="{name:'trashbin', chord: ' '}" :group="{ pull: false, put:false }">
+          <q-btn class="left-button" round color="deep-orange" icon="far fa-trash-alt" />
+        </draggable>
+        <Selection :options="chordKeys" v-model="selectedKey" icon="fas fa-key"/>         
+        <q-toolbar-title>
+
+        </q-toolbar-title>
+        <ChordBar class="col-10" :chordKey="selectedKey" :instrument="instrument" />
+        
       </q-toolbar>
     </q-footer>    
     
-    <q-drawer
-      v-model="leftDrawerOpen"
-      bordered
-      content-class="bg-grey-2"
-    >
+    <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
       <q-list>
         <q-item-label header>Essential Links</q-item-label>
         <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
@@ -75,30 +78,36 @@
     </q-drawer>
 
     <q-page-container>
-      <HelloWorld />
+      <EditWindow :song="chordSheet" style="padding:20px" />
     </q-page-container>
 
   </q-layout>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
 import Toolbar from './components/Toolbar';
 import ChordBar from './components/ChordBar';
+import Selection from './components/Selection';
+import EditWindow from './components/EditWindow';
+import draggable from 'vuedraggable';
 
 export default {
   name: 'LayoutDefault',
 
   components: {
-    HelloWorld, Toolbar, ChordBar,
+    Toolbar, ChordBar, Selection, EditWindow, draggable,
   },
   data () {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop,
       instrument: 'ukulele',
+      chordKeys: null,
+      selectedKey: null,
+      lyrics: Object,
     }
   },
   mounted() {
+    this.computeChordKeys(this.instrument);
   },
   methods: {
     onTranspose(value) {
@@ -109,6 +118,14 @@ export default {
     },
     onInstrumentChanged(value) {
       this.instrument = value;
+      this.computeChordKeys(this.instrument);
+    },
+    computeChordKeys(instrument) {
+      this.chordKeys = [];
+      if (!this.instrument) return;
+      for (var key of this.chordParser.db[this.instrument].keys) {
+          this.chordKeys.push({text: key, value: key});
+      }
     }
   }
 }

@@ -1,0 +1,54 @@
+<template lang="html">
+
+  <section class="sentence">
+    <ChordLine ref="ChordLine" :cdata="cdata" :draggedName="'lyricsChord'" @drop="onDrop" @showChord="showChord"></ChordLine>
+    <LyricsLine ref="LyricsLine" :cdata="cdata" :draggedName="'lyricsCharacter'" :sel="sel" @edit="onEdit" @drop="onDrop"></LyricsLine>
+  </section>
+
+</template>
+
+<script lang="js">
+  import ChordLine from './ChordLine'
+  import LyricsLine from './LyricsLine';
+
+  export default  {
+    name: 'sentence',
+    props: ['cdata', 'sel'],
+    mounted() {
+
+    },
+    data() {
+      return {
+      }
+    },
+    methods: {
+      onDrop(ev) {
+        this.$emit('drop', ev);
+      },
+      onEdit(ev) {
+        this.$emit('edit', ev);
+      },
+      showChord(ev) {
+        this.$emit('showChord', ev);
+      }
+    },
+    computed: {
+      
+    },
+    watch: {
+      sel: function(newVal, oldVal) {
+        console.log("Sentence sel changed", newVal);
+      }
+    },
+    components: {
+      ChordLine,
+      LyricsLine,
+    }
+}
+</script>
+
+<style>
+  .sentence {
+    display: table
+  }
+</style>

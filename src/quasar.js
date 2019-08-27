@@ -10,14 +10,18 @@ import '@quasar/extras/mdi-v3/mdi-v3.css'
 import '@quasar/extras/eva-icons/eva-icons.css'
 import {
   ClosePopup,
+  Ripple,
   Quasar,
   QAvatar,
+  QBar,
   QBtn,
-  QBtnDropdown,  
+  QBtnDropdown,
+  QBtnGroup,
   QDrawer,
   QFooter,
   QHeader,  
   QIcon,
+  QInput,
   QItem,
   QItemLabel,
   QItemSection,
@@ -35,12 +39,15 @@ Vue.use(Quasar, {
   config: {},
   components: {
     QAvatar,
+    QBar,
     QBtn,
     QBtnDropdown,
+    QBtnGroup,    
     QDrawer,
     QFooter,
     QHeader,      
     QIcon,
+    QInput,
     QItem,
     QItemLabel,    
     QItemSection,    
@@ -54,7 +61,8 @@ Vue.use(Quasar, {
     QToolbarTitle,
   },
   directives: {
-    ClosePopup,    
+    ClosePopup,
+    Ripple,
   },
   plugins: {
   }

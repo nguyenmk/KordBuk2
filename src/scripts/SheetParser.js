@@ -1,4 +1,4 @@
-var chordParser = require('./ChordParser'),
+var chordParser = require('./ChordParser').default,
 
 sheetParser = {};
 
@@ -59,10 +59,9 @@ function splitString(text) {
 }
 
 function reduce(sheet) {
-    metaData = {};
-    unknown = [];
-    lines = [];
-    lastLine = null;
+    let metaData = {};
+    let unknown = [];
+    let lines = [];
     for (var i=0; i < sheet.length; ++i) {
         var line = sheet[i];
         if (line.type === "ChordProMeta") {

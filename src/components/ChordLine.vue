@@ -3,7 +3,7 @@
   <tr class="chord-line">          
     <td v-for="(item, index) of cdata.lyrics">
       <Chord ref="Chord" @showChord="showChord" :type="type"
-        :cdata="{index: index, line: cdata.line, name: draggedName, 
+        :cdata="{index: index, line: cdata.line, draggedName: computedDraggedName, 
         chord: item.chord, call:triggerDrop}" 
       />
     </td>
@@ -34,7 +34,10 @@
       }
     },
     computed: {
-
+      computedDraggedName() {
+        if (this.type === "C") return "chordOnlyLine";
+        else return this.draggedName;
+      }
     },
     components: {
       Chord,

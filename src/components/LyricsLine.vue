@@ -8,7 +8,7 @@
      >
     <td v-for="(item, index) of cdata.lyrics">      
       <Character style="display:inline" :type="type"
-        :cdata="{index: index, line:cdata.line, name: draggedName,
+        :cdata="{index: index, line:cdata.line, draggedName: draggedName,
                         char: item.char, chord: item.chord, call:triggerDrop}" 
       />
     </td>

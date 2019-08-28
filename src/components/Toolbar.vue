@@ -7,8 +7,8 @@
     <q-btn class="left-button" round color="deep-orange" icon="fas fa-brush" />
     <q-btn class="left-button" round color="deep-orange" icon="fas fa-undo" />
     <q-btn class="left-button" round color="deep-orange" icon="fas fa-redo" />
-    <Selection :options="scales" v-model="scale" icon="fas fa-sliders-h"/>
-    <Selection :options="instruments" v-model="instrument"  icon="fas fa-guitar"/>    
+    <Selection :options="scales" v-model="scale" color="deep-orange" icon="fas fa-sliders-h"/>
+    <Selection :options="instruments" v-model="instrument" color="deep-orange" icon="fas fa-guitar"/>    
     <q-btn class="left-button" round color="deep-orange" icon="fas fa-music" />
   </section>
 </template>

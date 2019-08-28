@@ -91,7 +91,7 @@ chordParser.text = function(chord) {
     str = chord.key + shortSuffix(chord.suffix);
     if (chord.bass) str += "/" + chord.bass;
     return str;
-  } else return "";
+  } else return " ";
 }
 
 chordParser.transpose = function(chord, num_semitones, isSharp) {

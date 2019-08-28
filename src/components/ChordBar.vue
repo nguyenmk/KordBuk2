@@ -9,7 +9,7 @@
 
     <q-list dense padding class="row no-wrap">
       <q-item v-for="suffix of chordParser.db[instrument].suffixes" :key="suffix.id" clickable v-ripple>
-          <Chord :cdata="{name: 'chordList', chord:computeChord(suffix)}" />
+          <Chord :cdata="{draggedName: 'chordList', chord:computeChord(suffix)}" />
       </q-item>
     </q-list>
   </q-scroll-area>

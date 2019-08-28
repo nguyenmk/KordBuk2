@@ -14,7 +14,7 @@
 
     <q-footer elevated>
       <q-toolbar>
-        <draggable style="display:inline" :componentData="{name:'trashbin', chord: ' '}" :group="{ pull: false, put:false }">
+        <draggable style="display:inline" :componentData="{draggedName:'trashbin', chord: ' '}" :group="{ pull: false, put:false }">
           <q-btn class="left-button" round color="deep-orange" icon="far fa-trash-alt" />
         </draggable>
         <Selection :options="chordKeys" v-model="selectedKey" icon="fas fa-key"/>         

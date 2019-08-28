@@ -2,11 +2,11 @@
 
   <section class="chord" style="position:relative" >
     <template v-if="sentenceType=='C' || sentenceType=='L'">
-    <draggable :componentData="cdata" style="display:inline" 
-        :group="{ pull: onPull , put: false }" 
-        @end=onEnd>
-      <span v-show="cdata.chord" @mouseover="showChordImage(true)" @mouseleave="showChordImage(false)">{{chordText}}</span>
-    </draggable>
+      <draggable :componentData="cdata" style="display:inline" 
+          :group="{ pull: onPull , put: false }" 
+          @end=onEnd>
+        <span v-show="cdata.chord" @mouseover="showChordImage(true)" @mouseleave="showChordImage(false)">{{chordText}}</span>
+      </draggable>
     </template>
     <template v-else>
       <span v-show="cdata.chord" @mouseover="showChordImage(true)" @mouseleave="showChordImage(false)">{{chordText}}</span>
@@ -22,7 +22,11 @@
     name: 'chord',
     props: ['cdata', 'type'],
     mounted() {
-      this.sentenceType = this.type;
+      if (this.type) {
+        this.sentenceType = this.type;
+      } else {
+        this.sentenceType = 'C';
+      }
     },
     data() {
       return {
@@ -38,7 +42,7 @@
         return 'clone';
       },      
       onEnd(ev) {
-        if (ev.originalEvent.type == "drop") {
+        if (ev.originalEvent.type === "drop" || ev.originalEvent.type==="touchend") {
           if (this.to && this.to.componentData) {
             if (this.to.componentData.call) 
               this.to.componentData.call(this.to.componentData, this.cdata);

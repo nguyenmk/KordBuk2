@@ -1,5 +1,5 @@
 <template>
-    <q-btn-dropdown class="left-button" color="deep-orange" push glossy no-caps :icon="icon" :label="localValue">
+    <q-btn-dropdown class="left-button" :color="color" push glossy no-caps :icon="icon" :label="localValue">
         <q-list>
             <q-item v-for="item in options" :key="item.value" clickable v-close-popup @click="onSelect(item.value)">
                 <q-item-section>
@@ -19,7 +19,7 @@ export default {
     components: {
 
     },
-    props: ['options', 'v-model', 'value', 'icon'],
+    props: ['options', 'v-model', 'value', 'icon', 'color'],
     data () {
         return {
             localValue: null,

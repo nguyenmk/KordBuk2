@@ -5,22 +5,19 @@
     </Sentence>
     <template v-slot:action>
       <div>
-        <q-btn-toggle
-          v-model="sentenceType"
-          class="my-custom-toggle"
-          no-caps
-          rounded
-          unelevated
-          toggle-color="primary"
-          color="white"
-          text-color="primary"
-          :options="[
-            {label: 'L', value: 'L'},
-            {label: 'C', value: 'C'},
-            {label: 'I', value: 'I'},
-          ]"
-        />
-        <q-btn flat icon="close" />
+        <Selection :options="sentenceTypes" v-model="sentenceType" color="blue"/>
+        <q-btn color="primary" icon="fas fa-ellipsis-v">
+          <q-menu fit anchor="bottom middle" self="top middle">
+            <q-list>
+              <q-item clickable v-close-popup>
+                <q-item-section><q-icon color="blue" name="fas fa-plus" /></q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup>
+                <q-item-section><q-icon color="blue" name="fas fa-times" /></q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>        
       </div>
     </template>
   </q-banner>
@@ -38,29 +35,34 @@
 
 <script>
 import Sentence from './Sentence';
+import Selection from './Selection';
 
 export default {
     name: 'EditWindow',
     props: ['cdata', 'sel', 'type','lyrics'],
     components: {
-      Sentence,
+      Sentence, Selection,
     },
     data () {
       return {
-        sentenceType: 'L',
+        sentenceType: this.type,
+        sentenceTypes: [],
       }
     },
     mounted() {
-      this.sentenceType = this.type;
+      this.sentenceTypes = [{text:"L", value:"L"},{text:"C", value:"C"},{text:"I", value:"I"}];
     },
   methods: {    
     onDrop(ev) {
-      if (ev.from.name === "chordList" && ev.to.name === "lyricsCharacter") {
+      if (ev.from.draggedName === "chordList" && (ev.to.draggedName === "lyricsLine" || ev.to.draggedName ==="chordOnlyLine")) {
         this.setChord(ev.to, ev.from.chord);
-      } else if (ev.from.name === "lyricsChord" && ev.to.name === "lyricsCharacter") {
+      } else if ((ev.from.draggedName === "chordLine" || ev.from.draggedName === "chordOnlyLine") && ev.to.draggedName === "lyricsLine") {
         this.setChord(ev.to, ev.from.chord);
         this.setChord(ev.from, null);
-      } else if (ev.from.name === "lyricsChord" && ev.to.name === "trashbin") {
+      } else if (ev.from.draggedName === "chordLine" && ev.to.draggedName === "chordOnlyLine") {
+        this.setChord(ev.to, ev.from.chord);
+        this.setChord(ev.from, null);
+      } else if ((ev.from.draggedName === "chordLine" || ev.from.draggedName === "chordOnlyLine") && ev.to.draggedName === "trashbin") {
         this.setChord(ev.from, null);
       }
     },
@@ -108,6 +110,18 @@ export default {
     },      
     showChord(ev) {
       this.chord = ev.cdata.chord;
+    },
+    remLine(lineNumber) {
+      this.lyrics.remLine(lineNumber);
+      if (lineNumber == 0) return;
+      this.moveCaret(lineNumber - 1, this.lyrics.line(lineNumber-1).length + 1);
+    },
+    select(sel) {
+      //this.lyrics[sel.line].sel = sel;
+      this.lyrics.setSel(sel);
+    },
+    moveCaret(line, pos) {
+      this.select({line: line, start:pos, end: pos});
     },
   },
   watch: {

@@ -8,6 +8,7 @@ import '@quasar/extras/fontawesome-v5/fontawesome-v5.css'
 import '@quasar/extras/ionicons-v4/ionicons-v4.css'
 import '@quasar/extras/mdi-v3/mdi-v3.css'
 import '@quasar/extras/eva-icons/eva-icons.css'
+
 import {
   ClosePopup,
   Ripple,

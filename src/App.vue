@@ -192,6 +192,7 @@ export default {
 </script>
 
 <style>
+  @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
   .left-button {
     margin: 2px;
   }

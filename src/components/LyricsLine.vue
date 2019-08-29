@@ -6,7 +6,7 @@
     @keydown.enter=onEnter
     @click=onSelect
      >
-    <td v-for="(item, index) of cdata.lyrics">      
+    <td v-for="(item, index) of cdata.lyrics" :key="index">      
       <Character style="display:inline" :type="type"
         :cdata="{index: index, line:cdata.line, draggedName: draggedName,
                         char: item.char, chord: item.chord, call:triggerDrop}" 
@@ -32,10 +32,8 @@
     },
     methods: {
       onSelect(ev) {
-        ev.preventDefault();
-        
+        ev.preventDefault();        
         this.select(this.getSelection());
-        console.log("onSelect", this.getSelection());
       }, 
       onHome(ev) {
         ev.preventDefault();        
@@ -111,12 +109,11 @@
         this.$emit('edit', { type: 'delete', sel: this.getSelection()});
       },
       getCaretPosition(mode) {
-        var caretOffset = 0;
-        var document = window.document;
-        var sel = window.getSelection();
+        let caretOffset = 0;
+        let sel = window.getSelection();
         if (sel.rangeCount > 0) {
-          var range = window.getSelection().getRangeAt(0);
-          var preCaretRange = range.cloneRange();
+          let range = window.getSelection().getRangeAt(0);
+          let preCaretRange = range.cloneRange();
           preCaretRange.selectNodeContents(this.$el);
           if (mode === 'start') {
             if (range.startOffset == 0) caretOffset = -1;
@@ -126,7 +123,7 @@
             preCaretRange.setEnd(range.endContainer, range.endOffset);
           }
             
-          var clone = preCaretRange.cloneContents();
+          let clone = preCaretRange.cloneContents();
           caretOffset = caretOffset + clone.childElementCount;
         }
         if (caretOffset < 0) caretOffset = 0;
@@ -134,13 +131,12 @@
         return caretOffset;
       },      
       moveCaret(caretOffset) {
-        console.log("moveCaret:", caretOffset);
         if (caretOffset <= -1) caretOffset = 0;
         else if (caretOffset >= this.$children.length + 1) caretOffset = this.$children.length;
-        var document = window.document;
-        var sel = window.getSelection();
+        let document = window.document;
+        let sel = window.getSelection();
         if (sel.rangeCount > 0) {
-          var range = document.createRange();
+          let range = document.createRange();
           range.selectNodeContents(this.$el);
           range.setStart(range.startContainer, caretOffset);
           range.collapse(true);
@@ -177,7 +173,7 @@
 
     },
     watch: {
-      sel: function(newVal, oldVal) {
+      sel: function(newVal) {
         this.select(newVal);
       }
     },

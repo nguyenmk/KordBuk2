@@ -112,40 +112,36 @@ export default {
     if (this.chordSheet) {
         this.sheet = this.sheetParser.parse(this.chordSheet);
         this.lyrics = this.parseSong(this.sheet);
-    }
-    console.log('song: ', this.chordSheet);
-    console.log('sheet: ', this.sheet);
-    console.log('lyrics: ', this.lyrics);    
+    }  
   },
   methods: {
     parseSong: function(song) {
-      console.log("song", song);
-      var data = [];
-      for (var line of song.lines) {
-        var arr = [];
+      let data = [];
+      for (let line of song.lines) {
+        let arr = [];
         if (line.type === "Info") {
-          for (var ch of line.data) {
+          for (let ch of line.data) {
             arr.push({char:ch, chord:null});
           }
         } else if (line.type === "Chord") {
-          for (var chord of line.chords) {
+          for (let chord of line.chords) {
             arr.push({char:" ", chord: this.chordParser.parse(chord.chord)});
             arr.push({char:" ", chord:null});
           }
         } else if (line.type === "ChordLyrics") {
-          var lastChordPos = 0;
-          for (var chord of line.chords) {
-            for (var i = lastChordPos; i < chord.pos; ++i) arr.push({char: line.lyrics[i], chord: null});
+          let lastChordPos = 0;
+          for (let chord of line.chords) {
+            for (let i = lastChordPos; i < chord.pos; ++i) arr.push({char: line.lyrics[i], chord: null});
             arr.push({char: line.lyrics[chord.pos], chord: this.chordParser.parse(chord.chord)});
             lastChordPos = chord.pos + 1;
           }
-          for (var i = lastChordPos; i < line.lyrics.length; ++i) arr.push({char: line.lyrics[i], chord: null});
+          for (let i = lastChordPos; i < line.lyrics.length; ++i) arr.push({char: line.lyrics[i], chord: null});
         }
         if (arr.length > 0) {
           data.push({textLine: arr, sel: null, type: line.type});
         }
       }
-      var result = {data: data};
+      let result = {data: data};
       result.line = function(line) {
         if (line >= this.data.length) line = this.data.length -1;
         if (line < 0) line = 0;
@@ -170,8 +166,8 @@ export default {
       return result;
     },
     transpose(num_semitones) {
-      for (var line of this.lyrics.data) {
-        for (var elm of line.textLine) {
+      for (let line of this.lyrics.data) {
+        for (let elm of line.textLine) {
           elm.chord = this.chordParser.transpose(elm.chord, num_semitones);
         }
       }        
@@ -182,8 +178,8 @@ export default {
     },
     computeChordKeys(instrument) {
       this.chordKeys = [];
-      if (!this.instrument) return;
-      for (var key of this.chordParser.db[this.instrument].keys) {
+      if (!instrument) return;
+      for (var key of this.chordParser.db[instrument].keys) {
           this.chordKeys.push({text: key, value: key});
       }
     }

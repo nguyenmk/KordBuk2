@@ -42,11 +42,10 @@
     },
     watch: {
       chord: function(newValue, oldValue) {
-        console.log("Character chord is changed: ", newValue + "," + oldValue);
         if (newValue !== oldValue) this.chordData = newValue;
       },
       type: function(newValue) {
-        this.sentenceType = this.type;
+        this.sentenceType = newValue;
       }
     }
 }

@@ -37,7 +37,7 @@
       }
     },
     methods: {
-      onPull(to, from) {
+      onPull(to) {
         this.to = to.el.__vue__;
         return 'clone';
       },      
@@ -65,7 +65,7 @@
     },
     watch: {
       type: function(newValue) {
-        this.sentenceType = this.type;
+        this.sentenceType = newValue;
       }
     }
 }

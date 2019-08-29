@@ -54,10 +54,10 @@ chordParser.db = require('@tombatossals/chords-db/src/db').default;
 let suffixIndices = {}
 suffixIndices.ukulele = {};
 suffixIndices.guitar = {};
-for (var i in chordParser.db.ukulele.suffixes) {
+for (let i in chordParser.db.ukulele.suffixes) {
   suffixIndices.ukulele[chordParser.db.ukulele.suffixes[i]] = i;
 }
-for (var i in chordParser.db.guitar.suffixes) {
+for (let i in chordParser.db.guitar.suffixes) {
   suffixIndices.guitar[chordParser.db.guitar.suffixes[i]] = i;
 }
 
@@ -76,17 +76,17 @@ chordParser.getSuffixIndex = function(instrument, suffix) {
   return suffixIndices[instrument][properSuffix(suffix)];
 }
 chordParser.parse = function(chordText) {
-  var result = XRegExp.exec(chordText, this.CHORD_REGEX);
+  let result = XRegExp.exec(chordText, this.CHORD_REGEX);
   if (!result) return null;
   return {key: result.key, suffix: result.suffix, bass: result.bass};
 };  
 chordParser.getChord = function(instrument, key, suffix, bass) {
   key = key.replace("#","sharp");
-  var chord = this.db[instrument].chords[key][this.getSuffixIndex(instrument, suffix)];
+  let chord = this.db[instrument].chords[key][this.getSuffixIndex(instrument, suffix)];
   return {key: chord.key, suffix: chord.suffix, bass: bass};
 }
 chordParser.text = function(chord) {
-  var str = "";
+  let str = "";
   if (chord) {
     str = chord.key + shortSuffix(chord.suffix);
     if (chord.bass) str += "/" + chord.bass;
@@ -96,9 +96,9 @@ chordParser.text = function(chord) {
 
 chordParser.transpose = function(chord, num_semitones, isSharp) {
   if (chord) {
-    var isGetSharp = (isSharp)? isSharp: false;
-    var newKey = semiTones.getKey(chord.key, num_semitones);
-    chord.key = (isGetSharp && newChord.sharp)? newKey.sharp: newKey.flat;
+    let isGetSharp = (isSharp)? isSharp: false;
+    let newKey = semiTones.getKey(chord.key, num_semitones);
+    chord.key = (isGetSharp && chord.sharp)? newKey.sharp: newKey.flat;
   }
   return chord;
 }

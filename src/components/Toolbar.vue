@@ -50,7 +50,7 @@ export default {
     },
   },
   watch: {
-    scale: function(newValue, oldValue) {
+    scale: function(newValue) {
       var keyChange = -this.keyChange + newValue;
       this.$emit('transpose', keyChange);
       this.keyChange = newValue;

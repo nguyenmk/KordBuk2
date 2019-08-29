@@ -36,9 +36,7 @@
       
     },
     watch: {
-      sel: function(newVal, oldVal) {
-        console.log("Sentence sel changed", newVal);
-      }
+
     },
     components: {
       ChordLine,

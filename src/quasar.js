@@ -36,6 +36,7 @@ import {
   QScrollArea,  
   QToolbar,
   QToolbarTitle,
+  QTooltip,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -64,6 +65,7 @@ Vue.use(Quasar, {
     QScrollArea,    
     QToolbar,
     QToolbarTitle,
+    QTooltip,
   },
   directives: {
     ClosePopup,

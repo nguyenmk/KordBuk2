@@ -35,8 +35,8 @@
 
       computeChordKeys(instrument) {
         this.chordKeys = [];
-        if (!this.instrument) return;
-        for (var key of this.chordParser.db[this.instrument].keys) {
+        if (!instrument) return;
+        for (var key of this.chordParser.db[instrument].keys) {
             this.chordKeys.push({text: key, value: key});
         }
       }
@@ -45,7 +45,7 @@
 
     },
     watch: {
-        instrument: function(newValue, oldValue) {
+        instrument: function(newValue) {
           this.computeChordKeys(newValue);
         },
     },

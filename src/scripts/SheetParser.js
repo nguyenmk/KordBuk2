@@ -62,8 +62,8 @@ function reduce(sheet) {
     let metaData = {};
     let unknown = [];
     let lines = [];
-    for (var i=0; i < sheet.length; ++i) {
-        var line = sheet[i];
+    for (let i=0; i < sheet.length; ++i) {
+      let line = sheet[i];
         if (line.type === "ChordProMeta") {
             if (line.field === "unknown") {
                 unknown.push(line.value);
@@ -71,63 +71,61 @@ function reduce(sheet) {
                 metaData[line.field] = line.value;
             }
         } else if (line.type === "ChordLyrics") {
-            var text = "";
-            if (line.chords.length === line.lyrics.length) {
-                text = "";
-                for (var j = 0; i < line.chords.length; ++j) {
-                    line.chords[j].pos = text.length;
-                    text += line.lyrics[j];
-                }
-            } else {
-                text = line.lyrics[0].trimLeft();
-                var numCharRemoved = line.lyrics[0].length - text.length;
-                line.lyrics[0] = text;
-                for (var j = 1; j < line.lyrics.length; ++j) {
-                    line.chords[j-1].pos = text.length;
-                    text += line.lyrics[j];
-                }
-            }
-            lines.push({type:"ChordLyrics", chords:line.chords, lyrics:text});
+          let text = "";
+          if (line.chords.length === line.lyrics.length) {
+              text = "";
+              for (let j = 0; i < line.chords.length; ++j) {
+                  line.chords[j].pos = text.length;
+                  text += line.lyrics[j];
+              }
+          } else {
+              text = line.lyrics[0].trimLeft();
+              line.lyrics[0] = text;
+              for (let j = 1; j < line.lyrics.length; ++j) {
+                  line.chords[j-1].pos = text.length;
+                  text += line.lyrics[j];
+              }
+          }
+          lines.push({type:"ChordLyrics", chords:line.chords, lyrics:text});
         } else if (line.type === "Info") {
             line.data = line.data.trim();
             lines.push(line);
         } else if (line.type === "Chord") {
-            var nextLine = null;
-            if (i + 1 < sheet.length) var nextLine = sheet[i+1];
-            if (nextLine && nextLine.type === "Lyrics") {
-                var text = nextLine.data.trimLeft();
-                var numCharRemoved = nextLine.data.length - text.length;
-                for (var chord of line.chords) {
-                    chord.pos -= numCharRemoved;
-                }
-                lines.push({type:"ChordLyrics", chords:line.chords, lyrics:text });
-                ++i;
-            } else {
-                lines.push(line);
+          let nextLine = null;
+          if (i + 1 < sheet.length) nextLine = sheet[i+1];
+          if (nextLine && nextLine.type === "Lyrics") {
+            let text = nextLine.data.trimLeft();
+            let numCharRemoved = nextLine.data.length - text.length;
+            for (let chord of line.chords) {
+                chord.pos -= numCharRemoved;
             }
+            lines.push({type:"ChordLyrics", chords:line.chords, lyrics:text });
+            ++i;
+          } else {
+            lines.push(line);
+          }
         } else if (line.type === "Lyrics") {
-            lines.push({type:"ChordLyrics", chords:[], lyrics:line.data});
+          lines.push({type:"ChordLyrics", chords:[], lyrics:line.data});
         }
     }
 
     if (unknown.length > 0) metaData["unknown"] = unknown;
-    var result = {metaData: metaData, lines: lines}
-    return result;
+    return {metaData: metaData, lines: lines}
 }
 
 sheetParser.parse = function(chordSheet) {
     chordSheet = chordSheet.split(/\r?\n/)
-    var song = [];
-    for (var line of chordSheet) {
-      var chord = "";
-      var lyric = "";
-      var parseChord = false;
+    let song = [];
+    for (let line of chordSheet) {
+      let chord = "";
+      let lyric = "";
+      let parseChord = false;
       line = line.trimRight();
       if (line.length === 0) continue;
-      var chords = [];
-      var lyrics = [];
-      for (var i in line) {
-        var ch = line[i];
+      let chords = [];
+      let lyrics = [];
+      for (let i in line) {
+        let ch = line[i];
         if (ch === '[') {
           lyrics.push(lyric);
           parseChord = true;
@@ -149,24 +147,24 @@ sheetParser.parse = function(chordSheet) {
     }
 
     //now get line types
-    var sheet = [];
+    let sheet = [];
     
-    for (var line of song) {
-      var musicLine = { type: "Info"};
+    for (let line of song) {
+      let musicLine = { type: "Info"};
       if (line.chords.length == 0 && line.lyrics.length == 0) continue;
       if (line.chords.length == 0) {
         // this line has no square brackets
-        var text = line.lyrics[0];
-        var musicLine = parseChordProMetaData(text);
+        let text = line.lyrics[0];
+        let musicLine = parseChordProMetaData(text);
         if (musicLine) {
             sheet.push(musicLine);
             continue;
         }
 
-        var words = splitString(text);
+        let words = splitString(text);
         
         //check if all the words are chords ???
-        var valid = validChords(words);
+        let valid = validChords(words);
         if (!valid) {
           musicLine = {type: "Lyrics", data: line.originalLine};
         } else {
@@ -175,7 +173,7 @@ sheetParser.parse = function(chordSheet) {
       } else {
         // this line has a mix of lyrics and chords
         //check if all the chords are really chords
-        var valid = validChords(line.chords);
+        let valid = validChords(line.chords);
         if (!valid) {
           musicLine = {type:"Info", data: line.originalLine};
         } else {
@@ -185,8 +183,7 @@ sheetParser.parse = function(chordSheet) {
       sheet.push(musicLine);
     }
 
-    var sheet = reduce(sheet);
-    return sheet;
+    return reduce(sheet);
   }
 
   

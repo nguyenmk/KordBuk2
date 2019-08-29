@@ -1,5 +1,5 @@
 <template>
-    <q-btn-dropdown class="left-button" :color="color" push glossy no-caps :icon="icon" :label="localValue">
+    <q-btn-dropdown class="left-button dropDown" :color="color" push glossy no-caps :icon="icon" :label="localValue">
         <q-list>
             <q-item v-for="item in options" :key="item.value" clickable v-close-popup @click="onSelect(item.value)">
                 <q-item-section>
@@ -11,6 +11,9 @@
 </template>
 
 <style>
+    .dropDown{
+        font-family:'Courier New', Courier, monospace;
+    }
 </style>
 
 <script>

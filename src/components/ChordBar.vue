@@ -33,6 +33,13 @@
         return this.chordParser.getChord( this.instrument, this.chordKey, suffix);
       },
 
+      computeChordKeys(instrument) {
+        this.chordKeys = [];
+        if (!this.instrument) return;
+        for (var key of this.chordParser.db[this.instrument].keys) {
+            this.chordKeys.push({text: key, value: key});
+        }
+      }
     },
     computed: {
 

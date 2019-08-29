@@ -30,6 +30,7 @@ export default {
       instrument: 'ukulele',
       scales: [],
       scale: 0,
+      keyChange: 0,
     }
   },
   mounted() {
@@ -40,11 +41,19 @@ export default {
                     {text:"+3", value:3},{text:"+4", value:4},{text:"+5", value:5},{text:"+6", value:6},]
   },
   methods: {
-
+    onSelectInstrument(value) {
+      this.instrument = value;
+    },
+    onInstrumentChanged(value) {
+      this.instrument = value;
+      this.computeChordKeys(this.instrument);
+    },
   },
   watch: {
     scale: function(newValue, oldValue) {
-      console.log("scale changed: ", newValue);
+      var keyChange = -this.keyChange + newValue;
+      this.$emit('transpose', keyChange);
+      this.keyChange = newValue;
     },
     instrument: function(newValue) {
       this.$emit('instrumentChanged', newValue);

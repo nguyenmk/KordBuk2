@@ -41,13 +41,6 @@ export default {
                     {text:"+3", value:3},{text:"+4", value:4},{text:"+5", value:5},{text:"+6", value:6},]
   },
   methods: {
-    onSelectInstrument(value) {
-      this.instrument = value;
-    },
-    onInstrumentChanged(value) {
-      this.instrument = value;
-      this.computeChordKeys(this.instrument);
-    },
   },
   watch: {
     scale: function(newValue) {

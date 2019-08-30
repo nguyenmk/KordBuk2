@@ -41,9 +41,6 @@
       draggable,
     },
     watch: {
-      chord: function(newValue, oldValue) {
-        if (newValue !== oldValue) this.chordData = newValue;
-      },
       type: function(newValue) {
         this.sentenceType = newValue;
       }

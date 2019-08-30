@@ -1,16 +1,14 @@
 <template lang="html">
 
   <tr class="lyrics-line" contenteditable 
-    @keydown.up=onUp @keydown.down=onDown @keydown.left=onLeft @keydown.right=onRight @keydown.home=onHome @keydown.end=onEnd
-    @keydown.8=onBackspace @keydown.46=onDelete
-    @keydown.enter=onEnter
-    @click=onSelect
-     >
+        @keydown.up="onUp" @keydown.down="onDown" @keydown.left="onLeft" @keydown.right="onRight" 
+        @keydown.home="onHome" @keydown.end="onEnd"
+        @keydown.8="onBackspace" @keydown.46="onDelete" @keydown.enter="onEnter"
+        @click="onSelect">
     <td v-for="(item, index) of cdata.lyrics" :key="index">      
       <Character style="display:inline" :type="type"
-        :cdata="{index: index, line:cdata.line, draggedName: draggedName,
-                        char: item.char, chord: item.chord, call:triggerDrop}" 
-      />
+            :cdata="{index: index, line:cdata.line, draggedName: draggedName,
+            char: item.char, chord: item.chord, call:triggerDrop}" />
     </td>
   </tr>
 </template>
@@ -38,8 +36,7 @@
       onHome(ev) {
         ev.preventDefault();        
         let selection = this.getSelection();
-        
-        
+
         if (!ev.shiftKey) {
           selection.end = 0;
         } else {
@@ -53,8 +50,7 @@
       onEnd(ev) {
         ev.preventDefault();
         let selection = this.getSelection();
-        
-        
+
         if (!ev.shiftKey) {
           selection.start = this.$children.length;
         } else {
@@ -143,7 +139,6 @@
           sel.removeAllRanges();
           sel.addRange(range);
         }
-
       },
       getSelection() {
         return {start: this.getCaretPosition('start'), end: this.getCaretPosition('end'), line:this.cdata.line};

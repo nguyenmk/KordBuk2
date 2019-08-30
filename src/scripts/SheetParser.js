@@ -114,16 +114,19 @@ function reduce(sheet) {
 }
 
 sheetParser.parse = function(chordSheet) {
-    chordSheet = chordSheet.split(/\r?\n/)
+    chordSheet = chordSheet.split(/\r?\n/);
+    let maxLineLength = 0;
+    for (let i in chordSheet) {
+      chordSheet[i] = chordSheet[i].trimRight();
+      if (maxLineLength < chordSheet[i].length) maxLineLength = chordSheet[i].length;
+    }
+
     let song = [];
     for (let line of chordSheet) {
-      let chord = "";
-      let lyric = "";
+      console.log('line', line);
+      let chord = "", lyric = "";
       let parseChord = false;
-      line = line.trimRight();
-      if (line.length === 0) continue;
-      let chords = [];
-      let lyrics = [];
+      let chords = [], lyrics = [];
       for (let i in line) {
         let ch = line[i];
         if (ch === '[') {
@@ -134,18 +137,15 @@ sheetParser.parse = function(chordSheet) {
           lyric = "";
           parseChord = false;
           chords.push({pos: i, chord: chord})
+          console.log('i', i);
         } else {
-          if (parseChord) {
-            chord += ch;
-          } else {
-            lyric += ch;
-          }
+          (parseChord)? chord += ch: lyric +=ch;          
         }
       }
       if (lyric.length !== 0) lyrics.push(lyric); 
       song.push({chords: chords, lyrics: lyrics, originalLine: line});
     }
-
+    console.log('song', song);
     //now get line types
     let sheet = [];
     
@@ -155,7 +155,7 @@ sheetParser.parse = function(chordSheet) {
       if (line.chords.length == 0) {
         // this line has no square brackets
         let text = line.lyrics[0];
-        let musicLine = parseChordProMetaData(text);
+        musicLine = parseChordProMetaData(text);
         if (musicLine) {
             sheet.push(musicLine);
             continue;

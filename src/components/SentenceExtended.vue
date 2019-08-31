@@ -67,23 +67,32 @@ export default {
       }
     },
     setChord(posData, newChordName) {
-      this.lyrics.line(posData.line)[posData.index].chord = newChordName;
+      this.lyrics.setChord(posData.line, posData.index, newChordName);
     },
     onEdit(ev) {
       if (ev.type === 'backspace') {
         if (ev.sel.start == ev.sel.end) {
           if (ev.sel.start > 0) {
-            this.lyrics.remSel({line: ev.sel.line, start:ev.sel.start - 1, end:ev.sel.start});
+            this.lyrics.remSelection({line: ev.sel.line, start:ev.sel.start - 1, end:ev.sel.start});
             this.moveCaret(ev.sel.line, ev.sel.start - 1);
           } else {
             //combine with the line above
             if (ev.sel.line > 0) {
-              this.lyrics.line(ev.sel.line - 1).push(...this.lyrics.line(ev.sel.line));
-              this.remLine(ev.sel.line);
+              //this.lyrics.line(ev.sel.line - 1).push(...this.lyrics.line(ev.sel.line));
+              //this.remLine(ev.sel.line);
+              let prevLine = this.lyrics.line(ev.sel.line - 1);
+              if (prevLine) {
+                let prevLineLength = prevLine.data.length;
+                if (prevLine && prevLine.append(this.lyrics.line(ev.sel.line))) {
+                  this.remLine(ev.sel.line);
+                  this.moveCaret(ev.sel.line - 1,prevLineLength);
+                }
+              }
+
             }
           }
         } else {
-          this.lyrics.remSel(ev.sel);
+          this.lyrics.remSelection(ev.sel);
           this.moveCaret(ev.sel.line, ev.sel.start);
         }
         if (this.lyrics.line(ev.sel.line).length === 0) this.remLine(ev.sel.line);
@@ -91,17 +100,15 @@ export default {
       } else if (ev.type == 'delete') {
 
         if (ev.sel.start == ev.sel.end) {
-          this.lyrics.remSel({line:ev.sel.line, start:ev.sel.start, end:ev.sel.start+1});
+          this.lyrics.remSelection({line:ev.sel.line, start:ev.sel.start, end:ev.sel.start+1});
         } else {
-          this.lyrics.remSel(ev.sel);
+          this.lyrics.remSelection(ev.sel);
           this.moveCaret(ev.sel.line, ev.sel.start);
         }
         if (this.lyrics.line(ev.sel.line).length === 0) this.remLine(ev.sel.line);
 
       } else if (ev.type === 'enter') {
-        var newLine = this.lyrics.line(ev.sel.line).slice(ev.sel.end);
-        this.lyrics.remSel({line: ev.sel.line, start: ev.sel.end, end: -1});
-        this.lyrics.addLine(ev.sel.line + 1, {textLine: newLine, sel: null});
+        this.lyrics.splitLine(ev.sel.line, ev.sel.end);
         this.moveCaret(ev.sel.line + 1, 0);          
       } else if (ev.type === 'move') {          
         if (ev.sel.line < 0 || ev.sel.line >= this.lyrics.line(ev.sel.line).length) return;
@@ -118,7 +125,7 @@ export default {
     },
     select(sel) {
       //this.lyrics[sel.line].sel = sel;
-      this.lyrics.setSel(sel);
+      this.lyrics.setSelection(sel);
     },
     moveCaret(line, pos) {
       this.select({line: line, start:pos, end: pos});

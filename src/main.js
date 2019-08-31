@@ -11,6 +11,7 @@ Vue.mixin({
     return {
       chordParser: require('./scripts/ChordParser').default,
       sheetParser: require('./scripts/SheetParser').default,
+      songParser: require('./scripts/SongParser').default,
       chordSheet:`{title: Let it be}
                 {subtitle: ChordSheetJS example version}
                 {Chorus}

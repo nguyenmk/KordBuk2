@@ -1,7 +1,7 @@
 <template>
   <div v-if="lyrics">
-    <SentenceExtended v-for="(item, index) in lyrics.data" :key="index" 
-      :lyrics="lyrics"  :cdata="{lyrics: item.textLine, line:index}" :type="getSentenceType(item.type)" :sel="item.sel"/>
+    <SentenceExtended v-for="(item, index) in lyrics.content" :key="index" 
+      :lyrics="lyrics"  :cdata="{lyrics: item.data, line:index}" :type="getSentenceType(item.type)" :sel="item.sel"/>
   </div>
 
 </template>  

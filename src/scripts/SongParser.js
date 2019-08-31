@@ -118,7 +118,7 @@ class Lyrics{
 
   setSelection(selection) {
     let line = this.line(selection.line);
-    if (selection.line >= this.content.length || selection.line < 0 || line == null) return;
+    if (!line) return;
     line.sel = selection;
   }
 
@@ -132,7 +132,9 @@ class Lyrics{
   
   //remove line by line number
   remLine(lineNumber) {
+    if (this.content.length === 1) return false;
     this.content.splice(lineNumber, 1);
+    return true;
   }
   
   //add new line
@@ -143,8 +145,8 @@ class Lyrics{
   }
 
   splitLine(lineNumber, characterPos) {
-    var line = this.line(lineNumber);
-    var newLine = new Line();
+    let line = this.line(lineNumber);
+    let newLine = new Line();
     newLine.type = line.type;    
     newLine.data = line.data.slice(characterPos);
     if (newLine.data.length === 0) newLine.data.push({char:" ", chord:null});

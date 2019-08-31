@@ -145,14 +145,20 @@
       },
       select(selection) {
         if (!selection) return selection;
-        if (selection.start <= -1) selection.start = 0;
-        else if (selection.start >= this.$children.length + 1) selection.start = this.$children.length;
+        if (selection.start === selection.end) {
+          if (selection.start === -1) {
+            selection.start = this.$children.length;
+            selection.end = this.$children.length;
+          }
+        } else {
+          if (selection.start < 0) selection.start = 0;
+          else if (selection.start > this.$children.length) selection.start = this.$children.length;
 
-        if (selection.end <= selection.start) selection.end = selection.start;
-        else if (selection.end >= this.$children.length + 1) selection.end = this.$children.length;
-
-        var sel = window.getSelection();
-        var range = document.createRange();
+          if (selection.end < selection.start) selection.end = selection.start;
+          else if (selection.end > this.$children.length) selection.end = this.$children.length;
+        }
+        let sel = window.getSelection();
+        let range = document.createRange();
         range.selectNodeContents(this.$el);
         range.setStart(range.startContainer, selection.start);
         range.setEnd(range.endContainer, selection.end);

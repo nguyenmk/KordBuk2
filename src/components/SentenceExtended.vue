@@ -71,21 +71,25 @@ export default {
     },
     onEdit(ev) {
       if (ev.type === 'backspace') {
-        if (ev.sel.start == ev.sel.end) {
+        if (ev.sel.start == ev.sel.end) { //delete only one character
           if (ev.sel.start > 0) {
             this.lyrics.remSelection({line: ev.sel.line, start:ev.sel.start - 1, end:ev.sel.start});
-            this.moveCaret(ev.sel.line, ev.sel.start - 1);
+            if (this.lyrics.lineData(ev.sel.line).length === 0) {              
+              let prevLine = this.lyrics.line(ev.sel.line - 1);
+              if (prevLine) {
+                if (this.remLine(ev.sel.line)) this.moveCaret(ev.sel.line - 1, -1);
+              }
+            } else {
+              this.moveCaret(ev.sel.line, ev.sel.start - 1);
+            }
           } else {
             //combine with the line above
             if (ev.sel.line > 0) {
-              //this.lyrics.line(ev.sel.line - 1).push(...this.lyrics.line(ev.sel.line));
-              //this.remLine(ev.sel.line);
               let prevLine = this.lyrics.line(ev.sel.line - 1);
               if (prevLine) {
                 let prevLineLength = prevLine.data.length;
-                if (prevLine && prevLine.append(this.lyrics.line(ev.sel.line))) {
-                  this.remLine(ev.sel.line);
-                  this.moveCaret(ev.sel.line - 1,prevLineLength);
+                if (prevLine.append(this.lyrics.line(ev.sel.line))) {
+                  if (this.remLine(ev.sel.line)) this.moveCaret(ev.sel.line - 1,prevLineLength);
                 }
               }
 
@@ -95,17 +99,38 @@ export default {
           this.lyrics.remSelection(ev.sel);
           this.moveCaret(ev.sel.line, ev.sel.start);
         }
-        if (this.lyrics.line(ev.sel.line).length === 0) this.remLine(ev.sel.line);
-
       } else if (ev.type == 'delete') {
 
         if (ev.sel.start == ev.sel.end) {
-          this.lyrics.remSelection({line:ev.sel.line, start:ev.sel.start, end:ev.sel.start+1});
+          if (ev.sel.end === this.lyrics.lineData(ev.sel.line).length) { //cursor is at the end, so append the next line to this line
+            let line = this.lyrics.line(ev.sel.line);
+            if (line) {
+              let lineLength = line.data.length;
+              if (line.append(this.lyrics.line(ev.sel.line + 1))) {
+                if (this.remLine(ev.sel.line + 1)) this.moveCaret(ev.sel.line, lineLength);
+              }
+            }
+          } else { // just remove the character at the cursor
+            this.lyrics.remSelection({line:ev.sel.line, start:ev.sel.start, end:ev.sel.start+1});
+          }
         } else {
           this.lyrics.remSelection(ev.sel);
           this.moveCaret(ev.sel.line, ev.sel.start);
+          if (this.lyrics.lineData(ev.sel.line).length === 0) {
+            if (this.remLine(ev.sel.line)) {
+              let line = this.lyrics.line(ev.sel.line);
+              if (line) {
+                this.moveCaret(ev.sel.line, 0);
+              } else {
+                let prevLine = this.lyrics.line(ev.sel.line - 1);
+                  if (prevLine) {
+                    this.moveCaret(ev.sel.line - 1, -1);                    
+                  }
+              }
+            }
+          }
         }
-        if (this.lyrics.line(ev.sel.line).length === 0) this.remLine(ev.sel.line);
+        
 
       } else if (ev.type === 'enter') {
         this.lyrics.splitLine(ev.sel.line, ev.sel.end);
@@ -119,9 +144,7 @@ export default {
       this.chord = ev.cdata.chord;
     },
     remLine(lineNumber) {
-      this.lyrics.remLine(lineNumber);
-      if (lineNumber == 0) return;
-      this.moveCaret(lineNumber - 1, this.lyrics.line(lineNumber-1).length + 1);
+      return this.lyrics.remLine(lineNumber);      
     },
     select(sel) {
       //this.lyrics[sel.line].sel = sel;

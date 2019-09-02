@@ -1,7 +1,7 @@
 <template>
   <div v-if="lyrics">
     <SentenceExtended v-for="(item, index) in lyrics.content" :key="index" 
-      :lyrics="lyrics"  :cdata="{lyrics: item.data, line:index}" :type="getSentenceType(item.type)" :sel="item.sel"/>
+      :lyrics="lyrics"  :cdata="{lyrics: item.data, line:index}" :sel="item.sel"/>
   </div>
 
 </template>  
@@ -26,18 +26,11 @@ export default {
     },
     data () {
       return {
-        sentenceType: 'L',
       }
     },
     mounted() {
     },
   methods: {
-    getSentenceType: function(type) {
-      if (type === 'Info') return 'I';
-      else if (type == 'Chord') return 'C';
-      else return 'L';
-    },
-
     setChord(posData, newChordName) {
       this.lyrics.line(posData.line)[posData.index].chord = newChordName;
     },

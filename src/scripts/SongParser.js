@@ -65,7 +65,8 @@ class Line{
   }
 
   append(otherLine) {
-    if (this.type !== otherLine.type) return false;
+    if (!otherLine) return;
+    this.type = 'ChordLyrics';
     this.data.push(...otherLine.data);
     return true;
   }
@@ -152,19 +153,18 @@ class Lyrics{
   
   //remove line by line number
   remLine(lineNumber) {
-    if (this.content.length === 1) return false;
+    if (this.content.length === 1) {
+      let lineData = this.lineData(lineNumber);
+      if (lineData.length === 0) lineData.push({char: " ", chord: null});
+      return false;
+    }
     this.content.splice(lineNumber, 1);
     return true;
   }
   
   //add new line
   addLine(lineNumber, newItem) {
-    if (lineNumber === this.content.length) {
-      this.content.push(newItem);
-      Vue.set(this.content[this.content.length -1], 'sel', {line:null, start:null, end: null});
-    } else {
-      this.content.splice(lineNumber, 0, newItem);
-    }
+    this.content.splice(lineNumber, 0, newItem);
   }
 
   splitLine(lineNumber, characterPos) {

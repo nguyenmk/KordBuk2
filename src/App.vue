@@ -117,7 +117,7 @@ export default {
   methods: {
     transpose(num_semitones) {
       for (let line of this.lyrics.content) {
-        for (let elm of line.textLine) {
+        for (let elm of line.data) {
           elm.chord = this.chordParser.transpose(elm.chord, num_semitones);
         }
       }        
@@ -129,7 +129,7 @@ export default {
     computeChordKeys(instrument) {
       this.chordKeys = [];
       if (!instrument) return;
-      for (var key of this.chordParser.db[instrument].keys) {
+      for (let key of this.chordParser.db[instrument].keys) {
           this.chordKeys.push({text: key, value: key});
       }
     }

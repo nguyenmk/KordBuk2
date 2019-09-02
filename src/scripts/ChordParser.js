@@ -1,9 +1,9 @@
 
-var chordParser = {};
+let chordParser = {};
 
-var ROOT_PATTERN = '(?<key>[A-G](#|b)?)';
-var SUFFIX_PATTERN = '(?<suffix>\\(?(M|maj|major|m|min|minor|dim|sus|dom|aug)?(\\+|-|add)?(6/9)?\\d*\\)?)';
-var BASS_PATTERN = '(\\/(?<bass>[A-G](#|b)?))?';
+let ROOT_PATTERN = '(?<key>[A-G](#|b)?)';
+let SUFFIX_PATTERN = '(?<suffix>\\(?(M|maj|major|m|min|minor|dim|sus|dom|aug)?(\\+|-|add)?(6/9)?\\d*\\)?)';
+let BASS_PATTERN = '(\\/(?<bass>[A-G](#|b)?))?';
 
 let XRegExp = require("xregexp");
 chordParser.CHORD_REGEX = XRegExp("^" + ROOT_PATTERN + SUFFIX_PATTERN + BASS_PATTERN + "$");

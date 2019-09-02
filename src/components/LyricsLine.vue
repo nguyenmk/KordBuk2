@@ -6,7 +6,7 @@
         @keydown.8="onBackspace" @keydown.46="onDelete" @keydown.enter="onEnter"
         @click="onSelect">
     <td v-for="(item, index) of cdata.lyrics" :key="index">      
-      <Character style="display:inline" :type="type"
+      <Character style="display:inline"
             :cdata="{index: index, line:cdata.line, draggedName: draggedName,
             char: item.char, chord: item.chord, call:triggerDrop}" />
     </td>
@@ -19,13 +19,13 @@
 
   export default  {
     name: 'lyrics-line',
-    props: ['cdata', 'sel', 'draggedName', 'type'],
+    props: ['cdata', 'sel', 'draggedName'],
     mounted() {
-
+      this.updateSelection(this.sel);
     },
     data() {
       return {
-
+        selection: null,
       }
     },
     methods: {
@@ -126,37 +126,11 @@
         else if (caretOffset > this.$children.length) caretOffset = this.$children.length;
         return caretOffset;
       },      
-      moveCaret(caretOffset) {
-        if (caretOffset <= -1) caretOffset = 0;
-        else if (caretOffset >= this.$children.length + 1) caretOffset = this.$children.length;
-        let document = window.document;
-        let sel = window.getSelection();
-        if (sel.rangeCount > 0) {
-          let range = document.createRange();
-          range.selectNodeContents(this.$el);
-          range.setStart(range.startContainer, caretOffset);
-          range.collapse(true);
-          sel.removeAllRanges();
-          sel.addRange(range);
-        }
-      },
       getSelection() {
         return {start: this.getCaretPosition('start'), end: this.getCaretPosition('end'), line:this.cdata.line};
       },
       select(selection) {
-        if (!selection) return selection;
-        if (selection.start === selection.end) {
-          if (selection.start === -1) {
-            selection.start = this.$children.length;
-            selection.end = this.$children.length;
-          }
-        } else {
-          if (selection.start < 0) selection.start = 0;
-          else if (selection.start > this.$children.length) selection.start = this.$children.length;
-
-          if (selection.end < selection.start) selection.end = selection.start;
-          else if (selection.end > this.$children.length) selection.end = this.$children.length;
-        }
+        if (!selection) return selection;        
         let sel = window.getSelection();
         let range = document.createRange();
         range.selectNodeContents(this.$el);
@@ -168,6 +142,10 @@
       },
       triggerDrop(to, from) {
         this.$emit('drop', { type:'drop', from: from, to: to });
+      },
+      updateSelection(selection) {
+        this.selection = selection;
+        this.select(selection);
       }
     },
     computed: {
@@ -175,7 +153,7 @@
     },
     watch: {
       sel: function(newVal) {
-        this.select(newVal);
+        this.updateSelection(newVal);
       }
     },
     components: {

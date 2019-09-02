@@ -58,7 +58,7 @@ export default {
   computed: {
     songMetaData: function() {
         if (!this.sheet || !this.sheet.metaData) return "";
-        var str = "";
+        let str = "";
         for (const [key, value] of Object.entries(this.sheet.metaData)) {
             str = str + key + ":" + value + ",";
         }

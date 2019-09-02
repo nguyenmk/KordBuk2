@@ -2,7 +2,7 @@
 
   <tr class="chord-line">          
     <td v-for="(item, index) of cdata.lyrics" :key="index">
-      <Chord ref="Chord" @showChord="showChord" :type="type"
+      <Chord ref="Chord" @showChord="showChord"
         :cdata="{index: index, line: cdata.line, draggedName: computedDraggedName, 
         chord: item.chord, call:triggerDrop}" 
       />
@@ -16,7 +16,7 @@
 
   export default  {
     name: 'chord-line',
-    props: ['cdata', 'draggedName', 'type'],
+    props: ['cdata', 'draggedName'],
     mounted() {
 
     },

@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 let chordParser = require('./ChordParser').default;
 
 class Line{
@@ -68,7 +70,21 @@ class Line{
     return true;
   }
 
-
+  setSelection(newSelection) {
+    if (!newSelection.hasOwnProperty('start') || !newSelection.hasOwnProperty('end')) return;
+    if (newSelection.start === newSelection.end) {
+      if (newSelection.start < 0 || newSelection.start > this.data.length) {
+        newSelection.start = this.data.length;
+        newSelection.end = newSelection.start;
+      }
+    } else {
+      if (newSelection.start < 0) newSelection.start = 0;
+      else if (newSelection.start > this.data.length) newSelection.start = this.data.length;
+      if (newSelection.end < newSelection.start) newSelection.end = newSelection.start;
+      else if (newSelection.end > this.data.length) newSelection.end = this.data.length;
+    }
+    this.sel = newSelection;
+  }
 }
 
 class Lyrics{
@@ -119,15 +135,19 @@ class Lyrics{
   setSelection(selection) {
     let line = this.line(selection.line);
     if (!line) return;
-    line.sel = selection;
+    line.setSelection(selection);
   }
 
   //remove selected text
   remSelection(selection) {
     let lineData = this.lineData(selection.line);
     if (!lineData) return;
-    if (selection.end != -1) lineData.splice(selection.start, selection.end - selection.start);
-    else lineData.splice(selection.start);
+    if (selection.end != -1) {
+      lineData.splice(selection.start, selection.end - selection.start);
+    }
+    else {
+      lineData.splice(selection.start);
+    }
   }
   
   //remove line by line number
@@ -139,20 +159,23 @@ class Lyrics{
   
   //add new line
   addLine(lineNumber, newItem) {
-    let line = this.line(lineNumber);
-    if (!line) this.content.push(newItem);
-    else this.content.splice(lineNumber, 0, newItem);
+    if (lineNumber === this.content.length) {
+      this.content.push(newItem);
+      Vue.set(this.content[this.content.length -1], 'sel', {line:null, start:null, end: null});
+    } else {
+      this.content.splice(lineNumber, 0, newItem);
+    }
   }
 
   splitLine(lineNumber, characterPos) {
     let line = this.line(lineNumber);
     let newLine = new Line();
-    newLine.type = line.type;    
+    newLine.type = line.type;
     newLine.data = line.data.slice(characterPos);
     if (newLine.data.length === 0) newLine.data.push({char:" ", chord:null});
     newLine.data.sel = null;
     this.remSelection({line: lineNumber, start: characterPos, end: -1});
-    this.addLine(lineNumber + 1,newLine);
+    this.addLine(lineNumber + 1, newLine);
   }
 }
 

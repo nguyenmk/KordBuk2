@@ -1,14 +1,9 @@
 <template lang="html">
 
   <section class="character">
-    <template v-if="sentenceType=='L'">
-      <draggable :componentData="cdata" style="display:inline" :group="{ pull: false , put: false }">
-        <span class="char">{{computedChar}}</span>
-      </draggable>
-    </template>
-    <template v-else>
+    <draggable :componentData="cdata" style="display:inline" :group="{ pull: false , put: false }">
       <span class="char">{{computedChar}}</span>
-    </template>
+    </draggable>
   </section>
 
 </template>
@@ -18,22 +13,21 @@
 
   export default  {
     name: 'character',
-    props: ['cdata','type'],
+    props: ['cdata'],
     mounted() {
-      this.sentenceType = this.type;
+
     },
     data() {
       return {
-        sentenceType: null,
       }
     },
     methods: {
     },
     computed: {
       computedChar: function() {
-        var str = this.cdata.char;
-        var chordText = this.chordParser.text(this.cdata.chord);
-        for (var i = str.length; i < chordText.length; ++i) str += "-";        
+        let str = this.cdata.char;
+        let chordText = this.chordParser.text(this.cdata.chord);
+        for (let i = str.length; i < chordText.length; ++i) str += "-";        
         return str;
       },
     },
@@ -41,9 +35,6 @@
       draggable,
     },
     watch: {
-      type: function(newValue) {
-        this.sentenceType = newValue;
-      }
     }
 }
 </script>

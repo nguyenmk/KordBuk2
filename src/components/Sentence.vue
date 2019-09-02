@@ -1,8 +1,8 @@
 <template lang="html">
 
   <section class="sentence">
-    <ChordLine v-if="type=='C' || type=='L'" :type="type" :cdata="cdata" :draggedName="'chordLine'" @drop="onDrop" @showChord="showChord"></ChordLine>
-    <LyricsLine v-if="type=='L' || type == 'I'" :type="type" :cdata="cdata" :draggedName="'lyricsLine'" :sel="sel" @edit="onEdit" @drop="onDrop"></LyricsLine>
+    <ChordLine :cdata="cdata" :draggedName="'chordLine'" @drop="onDrop" @showChord="showChord"></ChordLine>
+    <LyricsLine :cdata="cdata" :draggedName="'lyricsLine'" :sel="sel" @edit="onEdit" @drop="onDrop"></LyricsLine>
   </section>
 
 </template>
@@ -13,7 +13,7 @@
 
   export default  {
     name: 'sentence',
-    props: ['cdata', 'sel', 'type'],
+    props: ['cdata', 'sel'],
     mounted() {
 
     },

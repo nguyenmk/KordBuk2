@@ -31,7 +31,7 @@
         <q-item-label header>Essential Links</q-item-label>
         <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
           <q-item-section avatar>
-            <q-icon name="school" />
+            <q-icon name="favorite" />
           </q-item-section>
           <q-item-section>
             <q-item-label>My favorites</q-item-label>
@@ -40,7 +40,7 @@
         </q-item>
         <q-item clickable tag="a" target="_blank" href="https://github.com/quasarframework/">
           <q-item-section avatar>
-            <q-icon name="code" />
+            <q-icon name="help" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Help</q-item-label>
@@ -49,7 +49,7 @@
         </q-item>
         <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
           <q-item-section avatar>
-            <q-icon name="chat" />
+            <q-icon name="build" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Settings</q-item-label>
@@ -58,7 +58,7 @@
         </q-item>
         <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
           <q-item-section avatar>
-            <q-icon name="forum" />
+            <q-icon name="edit" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Feedback</q-item-label>
@@ -67,7 +67,7 @@
         </q-item>
         <q-item clickable tag="a" target="_blank" href="https://twitter.com/quasarframework">
           <q-item-section avatar>
-            <q-icon name="rss_feed" />
+            <q-icon name="people" />
           </q-item-section>
           <q-item-section>
             <q-item-label>About</q-item-label>

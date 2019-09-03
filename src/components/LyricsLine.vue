@@ -36,26 +36,14 @@
       onHome(ev) {
         ev.preventDefault();        
         let selection = this.getSelection();
-
-        if (!ev.shiftKey) {
-          selection.end = 0;
-        } else {
-          selection.end = selection.start
-        }
+        selection.end = (!ev.shiftKey) ? 0 : selection.start;
         selection.start = 0;
         this.$emit('edit', {type: 'move', sel:selection});
-
-        //this.$emit('edit', {type:'move', sel: {start:0, end:0, line: this.cdata.line}}); 
       },
       onEnd(ev) {
         ev.preventDefault();
         let selection = this.getSelection();
-
-        if (!ev.shiftKey) {
-          selection.start = this.$children.length;
-        } else {
-          selection.start = selection.end;
-        }
+        selection.start = (!ev.shiftKey)? this.$children.length : selection.end;
         selection.end = this.$children.length;
         this.$emit('edit', {type: 'move', sel:selection});
       },

@@ -1,7 +1,7 @@
 <template>
   <div v-if="lyrics">
     <Sentence v-for="(item, index) in lyrics.content" :key="index" 
-      :lyrics="lyrics"  :cdata="{lyrics: item, line:index}" :sel="item.sel"/>
+      :lyrics="lyrics" :cdata="{lyrics: item, line:index}" :sel="item.sel"/>
   </div>
 
 </template>  

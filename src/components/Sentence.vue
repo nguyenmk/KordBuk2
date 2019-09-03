@@ -20,18 +20,19 @@ import ChordLine from './ChordLine'
 import LyricsLine from './LyricsLine';
 
 export default {
-    name: 'EditWindow',
-    props: ['cdata', 'sel', 'lyrics'],
-    components: {
-      ChordLine, LyricsLine,
-    },
-    data () {
-      return {
+  name: 'EditWindow',
+  props: ['cdata', 'sel', 'lyrics'],
+  components: {
+    ChordLine, LyricsLine,
+  },
+  data () {
+    return {
 
-      }
-    },
-    mounted() {
-    },
+    }
+  },
+  mounted() {
+    
+  },
   methods: {    
     onDrop(ev) {
       if (ev.from.draggedName === "chordList" && (ev.to.draggedName === "lyricsLine" || ev.to.draggedName ==="chordOnlyLine")) {

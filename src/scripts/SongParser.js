@@ -1,5 +1,3 @@
-import Vue from 'vue';
-
 let chordParser = require('./ChordParser').default;
 
 class Line{

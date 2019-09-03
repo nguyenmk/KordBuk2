@@ -102,7 +102,6 @@ sheetParser.parse = function(chordSheet) {
 
     let song = [];
     for (let line of chordSheet) {
-      console.log('line', line);
       let chord = "", text = "";
       let parseChord = false;
       let chords = [];
@@ -120,7 +119,7 @@ sheetParser.parse = function(chordSheet) {
       }
       song.push({chords: chords, text: text, originalLine: line});
     }
-    console.log('song', song);
+
     //now get line types
     let sheet = [];
     

@@ -1,6 +1,6 @@
 <template>
   <div v-if="lyrics">
-    <SentenceExtended v-for="(item, index) in lyrics.content" :key="index" 
+    <Sentence v-for="(item, index) in lyrics.content" :key="index" 
       :lyrics="lyrics"  :cdata="{lyrics: item, line:index}" :sel="item.sel"/>
   </div>
 
@@ -16,13 +16,13 @@
 </style>
 
 <script>
-import SentenceExtended from './SentenceExtended';
+import Sentence from './Sentence';
 
 export default {
     name: 'EditWindow',
     props: ['lyrics'],
     components: {
-        SentenceExtended,
+        Sentence,
     },
     data () {
       return {

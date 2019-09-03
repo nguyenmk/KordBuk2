@@ -72,6 +72,10 @@ class Line{
   }
 
   setSelection(newSelection) {
+    if (!newSelection) {
+      this.sel = newSelection;
+      return;
+    }
     if (!newSelection.hasOwnProperty('start') || !newSelection.hasOwnProperty('end')) return;
     if (newSelection.start === newSelection.end) {
       if (newSelection.start < 0 || newSelection.start > this.data.length) {

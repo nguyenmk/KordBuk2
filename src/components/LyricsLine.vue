@@ -5,7 +5,7 @@
         @keydown.home="onHome" @keydown.end="onEnd"
         @keydown.8="onBackspace" @keydown.46="onDelete" @keydown.enter="onEnter"
         @click="onSelect">
-    <td v-for="(item, index) of cdata.lyrics" :key="index">      
+    <td v-for="(item, index) of cdata.lyrics.data" :key="index">      
       <Character style="display:inline"
             :cdata="{index: index, line:cdata.line, draggedName: draggedName,
             char: item.char, chord: item.chord, call:triggerDrop}" />
@@ -153,7 +153,10 @@
     },
     watch: {
       sel: function(newVal) {
-        this.updateSelection(newVal);
+        if (newVal !== null) {
+          this.updateSelection(newVal);
+          this.cdata.lyrics.setSelection(null);
+        }
       }
     },
     components: {

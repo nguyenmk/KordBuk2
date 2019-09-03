@@ -1,7 +1,7 @@
 <template lang="html">
 
   <tr class="chord-line">          
-    <td v-for="(item, index) of cdata.lyrics" :key="index">
+    <td v-for="(item, index) of cdata.lyrics.data" :key="index">
       <Chord ref="Chord" @showChord="showChord"
         :cdata="{index: index, line: cdata.line, draggedName: computedDraggedName, 
         chord: item.chord, call:triggerDrop}" 

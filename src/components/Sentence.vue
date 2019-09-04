@@ -19,6 +19,7 @@
 <script>
 import ChordLine from './ChordLine'
 import LyricsLine from './LyricsLine';
+let LyricSelection = require('../scripts/LyricSelection').default;
 
 export default {
   name: 'EditWindow',
@@ -61,7 +62,7 @@ export default {
       let sel = ev.sel;
       let start = sel.start;
       let end = sel.end;
-      let line = sel.line;
+      let line = sel.lineStart;
       if (ev.type === 'delete' || ev.type === 'backspace') {
         let lineOffset = 0, startOffset = start;
         if (ev.type === 'backspace') {
@@ -72,12 +73,12 @@ export default {
           if (this.atLimit(sel, ev.type)) { //combine with the line above or below
             this.reduceNextLine(line + lineOffset);
           } else {
-            this.removeSelection({line:line, start: startOffset, end: startOffset + 1}, ev.type);
+            this.removeSelection(new LyricSelection(line, startOffset, line, startOffset + 1), ev.type);
           }
         } else this.removeSelection(sel, ev.type);        
       } else if (ev.type === 'enter') {
-        this.lyrics.splitLine(ev.sel.line, ev.sel.end);
-        this.moveCaret(ev.sel.line + 1, 0); 
+        this.lyrics.splitLine(ev.sel.lineStart, ev.sel.end);
+        this.moveCaret(ev.sel.lineStart + 1, 0); 
       } else if (ev.type === 'move') {
         this.select(ev.sel);
       }
@@ -99,23 +100,22 @@ export default {
     },
     atLimit(sel, action) {
       if (action === "delete") {
-        return sel.end === this.lyrics.lineData(sel.line).length
+        return sel.end === this.lyrics.lineData(sel.lineStart).length
       } else {
         return sel.start === 0;
       }
     },
     removeSelection(sel, action) {      
       this.lyrics.remSelection(sel);          
-      if (this.lyrics.lineData(sel.line).length === 0) {
-        this.remLine(sel.line, (action==="delete"? 1 : -1));            
-      } else this.moveCaret(sel.line, sel.start);
+      if (this.lyrics.lineData(sel.lineStart).length === 0) {
+        this.remLine(sel.lineStart, (action==="delete"? 1 : -1));            
+      } else this.moveCaret(sel.lineStart, sel.start);
     },
     select(sel) {
-      //this.lyrics[sel.line].sel = sel;
       this.lyrics.setSelection(sel);
     },
     moveCaret(line, pos) {
-      this.select({line: line, start:pos, end: pos});
+      this.select(new LyricSelection(line, pos, line, pos));
     },
   },
   watch: {

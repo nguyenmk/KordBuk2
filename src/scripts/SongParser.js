@@ -1,4 +1,5 @@
 let chordParser = require('./ChordParser').default;
+let LyricSelection = require('./LyricSelection').default;
 
 class Line{
   constructor(lineText, lineChords, lineType) {
@@ -136,14 +137,14 @@ class Lyrics{
   }
 
   setSelection(selection) {
-    let line = this.line(selection.line);
+    let line = this.line(selection.lineStart);
     if (!line) return;
     line.setSelection(selection);
   }
 
   //remove selected text
   remSelection(selection) {
-    let lineData = this.lineData(selection.line);
+    let lineData = this.lineData(selection.lineStart);
     if (!lineData) return;
     if (selection.end != -1) {
       lineData.splice(selection.start, selection.end - selection.start);
@@ -176,7 +177,7 @@ class Lyrics{
     newLine.data = line.data.slice(characterPos);
     if (newLine.data.length === 0) newLine.data.push({char:" ", chord:null});
     newLine.data.sel = null;
-    this.remSelection({line: lineNumber, start: characterPos, end: -1});
+    this.remSelection(new LyricSelection(lineNumber, characterPos, lineNumber, -1));
     this.addLine(lineNumber + 1, newLine);
   }
 
@@ -184,11 +185,9 @@ class Lyrics{
     let targetLine = this.line(target.line);
     let sourceLine = this.line(source.line);
     if (targetLine === null || sourceLine === null) return;
-    this.remSelection(target);
     let data = sourceLine.data.slice(source.start, source.end);
+    this.remSelection(target);    
     targetLine.data.splice(target.start, 0, ...data);
-    
-
   }
 }
 

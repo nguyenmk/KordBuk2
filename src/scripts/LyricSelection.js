@@ -1,11 +1,9 @@
 
-class LyricSelection {
+export default class LyricSelection {
   constructor(lineStart, posStart, lineEnd, posEnd) {
     this.lineStart = lineStart;
-    this.posStart = posStart;
+    this.start = posStart;
     this.lineEnd = lineEnd;
-    this.posEnd = posEnd;
+    this.end = posEnd;
   }
 }
-
-export default LyricSelection;

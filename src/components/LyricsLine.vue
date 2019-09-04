@@ -18,6 +18,7 @@
 <script lang="js">
 
   import Character from './Character.vue';
+  let LyricSelection = require('../scripts/LyricSelection').default;
 
   export default  {
     name: 'lyrics-line',
@@ -52,12 +53,14 @@
       onUp(ev) {
         ev.preventDefault();
         let caretPos = this.getCaretPosition();
-        this.$emit('edit', {type:'move', sel: {start: caretPos, end: caretPos, line: this.cdata.line - 1}});
+        let line = this.cdata.line - 1;
+        this.$emit('edit', {type:'move', sel: new LyricSelection(line, caretPos, line, caretPos)});
       },
       onDown(ev) {
         ev.preventDefault();
-        let caretPos = this.getCaretPosition();                
-        this.$emit('edit', {type:'move', sel: {start: caretPos, end: caretPos, line: this.cdata.line + 1}});
+        let caretPos = this.getCaretPosition();
+        let line = this.cdata.line + 1;
+        this.$emit('edit', {type:'move', sel: new LyricSelection(line, caretPos, line, caretPos)});
       },
       onLeft(ev) {
         ev.preventDefault();
@@ -128,7 +131,8 @@
         return caretOffset;
       },      
       getSelection() {
-        return {start: this.getCaretPosition('start'), end: this.getCaretPosition('end'), line:this.cdata.line};
+        let line = this.cdata.line;
+        return new LyricSelection(line, this.getCaretPosition('start'), line, this.getCaretPosition('end'));
       },
       select(selection) {
         if (!selection) return selection;        

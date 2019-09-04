@@ -179,6 +179,17 @@ class Lyrics{
     this.remSelection({line: lineNumber, start: characterPos, end: -1});
     this.addLine(lineNumber + 1, newLine);
   }
+
+  copy(source, target) {
+    let targetLine = this.line(target.line);
+    let sourceLine = this.line(source.line);
+    if (targetLine === null || sourceLine === null) return;
+    this.remSelection(target);
+    let data = sourceLine.data.slice(source.start, source.end);
+    targetLine.data.splice(target.start, 0, ...data);
+    
+
+  }
 }
 
 let songParser = {};

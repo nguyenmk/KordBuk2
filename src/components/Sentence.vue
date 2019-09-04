@@ -1,7 +1,8 @@
 <template>
   <q-banner inline-actions class="text-lback sentence">
     <ChordLine :cdata="cdata" :draggedName="'chordLine'" @drop="onDrop" @showChord="showChord"></ChordLine>
-    <LyricsLine :cdata="cdata" :draggedName="'lyricsLine'" :sel="sel" @edit="onEdit" @drop="onDrop"></LyricsLine>
+    <LyricsLine :cdata="cdata" :draggedName="'lyricsLine'" :sel="sel" 
+        @edit="onEdit" @drop="onDrop" @paste="onPaste" />
   </q-banner>
 
 </template>  
@@ -33,7 +34,13 @@ export default {
   mounted() {
     
   },
-  methods: {    
+  methods: {
+    onPaste(ev) {      
+      let lyricsData = ev.lyricsData;
+      this.lyrics.copy(lyricsData.source, lyricsData.target);
+      console.log('lyrics data', ev.lyricsData);
+      console.log('paste', ev);
+    },
     onDrop(ev) {
       if (ev.from.draggedName === "chordList" && (ev.to.draggedName === "lyricsLine" || ev.to.draggedName ==="chordOnlyLine")) {
         this.setChord(ev.to, ev.from.chord);

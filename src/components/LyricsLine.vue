@@ -4,6 +4,8 @@
         @keydown.up="onUp" @keydown.down="onDown" @keydown.left="onLeft" @keydown.right="onRight" 
         @keydown.home="onHome" @keydown.end="onEnd"
         @keydown.8="onBackspace" @keydown.46="onDelete" @keydown.enter="onEnter"
+        @paste = "onPaste"
+        @copy = "onCopy"
         @click="onSelect">
     <td v-for="(item, index) of cdata.lyrics.data" :key="index">      
       <Character style="display:inline"
@@ -91,6 +93,17 @@
       onDelete(ev) {
         ev.preventDefault();        
         this.$emit('edit', { type: 'delete', sel: this.getSelection()});
+      },
+      onPaste(ev) {
+        ev.preventDefault();
+        let data = JSON.parse(ev.clipboardData.getData("text/plain"));
+        ev.lyricsData = {source: data, target:this.getSelection()};
+        this.$emit('paste', ev);
+      },
+      onCopy(ev) {
+        ev.preventDefault();
+        const selection = this.getSelection();
+        ev.clipboardData.setData("text/plain",JSON.stringify(selection));        
       },
       getCaretPosition(mode) {
         let caretOffset = 0;
